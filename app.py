@@ -12,10 +12,10 @@ choix = st.sidebar.selectbox(
 )
 
 if choix == "Connexion":
-    st.subheader("Connectez-vous")
-    email = st.text_input("Email")
-    password = st.text_input("Mot de passe", type="password")
     with st.form("authentification"):
+        st.subheader("Connectez-vous")
+        email = st.text_input("Email")
+        password = st.text_input("Mot de passe", type="password")
         submit = st.form_submit_button("Se connecter")
         if submit:
             user = login(email, password)
@@ -28,12 +28,12 @@ if choix == "Connexion":
                 st.error("Mot de passe ou email incorrect")
 
 elif choix == "Créer un compte":
-    st.title("Creation de compte")
-    nom = st.text_input("Nom")
-    email = st.text_input("Email")
-    password = st.text_input("Mot de passe", type="password")
-    confirmation = st.text_input("Confirmer le mot de passe")
+    st.subheader("Creation de compte")
     with st.form("register"):
+        nom = st.text_input("Nom")
+        email = st.text_input("Email")
+        password = st.text_input("Mot de passe", type="password")
+        confirmation = st.text_input("Confirmer le mot de passe")
         submit = st.form_submit_button("Creer votre compte")
 
         if submit:
