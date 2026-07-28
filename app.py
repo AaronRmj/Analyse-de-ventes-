@@ -1,17 +1,50 @@
 import streamlit as st
 from utils.auth import login, register
 
-#titre principale
 st.header("Application analyse de ventes")
+
+if "user" not in st.session_state:
+    st.session_state["user"] = None
 
 choix = st.sidebar.selectbox(
     label="Choisissez une action",
-    options= ["Connexion", "Créer un compte", "Déconnexion"]
+    options=["Connexion", "Créer un compte", "Déconnexion"]
 )
-
-
 
 if choix == "Connexion":
     st.subheader("Connectez-vous")
-    st.text_input("Email")
-    st.text_input("Mot de passe", type="password")
+    email = st.text_input("Email")
+    password = st.text_input("Mot de passe", type="password")
+    with st.form("authentification"):
+        submit = st.form_submit_button("Se connecter")
+        if submit:
+            user = login(email, password)
+
+            if user:
+                st.session_state["user"] = user
+                st.success("Vous êtes connecté")
+                
+            else:
+                st.error("Mot de passe ou email incorrect")
+
+elif choix == "Créer un compte":
+    st.title("Creation de compte")
+    nom = st.text_input("Nom")
+    email = st.text_input("Email")
+    password = st.text_input("Mot de passe", type="password")
+    confirmation = st.text_input("Confirmer le mot de passe")
+    with st.form("register"):
+        submit = st.form_submit_button("Creer votre compte")
+
+        if submit:
+            if confirmation != password:
+                st.error("Les mots de passe ne se correspondent pas")
+            else:    
+                register(nom, email, password)
+                st.success("Compte créé avec succès")
+                
+
+elif choix == "Déconnexion":
+    st.session_state["user"] = None
+    st.success("Déconnecté")
+    st.rerun()
